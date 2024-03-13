@@ -14,7 +14,10 @@
     const username = ref("");
     const password = ref("");
     const store = useConfigurationStore();
-    const stringService = new StringService(new NumberService());
+    const numberService = new NumberService();
+    const stringService = new StringService(numberService);
+    
+console.log(numberService.fill(0, 10));
 
     function generateUsername() {
         const userSettings = store.user;

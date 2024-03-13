@@ -2,6 +2,7 @@ import { CharacterType, getRange } from "../enumerations/CharacterType";
 import { INumberService } from "./NumberService";
 import { IStringGenerationConfiguration } from "../configuration/StringGenerationConfiguration";
 export interface IStringService {
+    getCharCodeArray(str: string): number[];
     addSpacesToCamelCase(camelCaseValue: string): string;
     getRandomCharacter(type: CharacterType): string;
     generateString(length: number, type: CharacterType,
@@ -13,6 +14,15 @@ export class StringService implements IStringService {
 
     constructor(numberService: INumberService) {
         this.numberService = numberService;
+    }
+
+    getCharCodeArray(str: string): number[] {
+        const array = [];
+        for (let i = 0; i < str.length; i++) {
+            array.push(str.charCodeAt(i));
+        }
+
+        return array;
     }
 
     addSpacesToCamelCase(camelCaseValue: string) {
@@ -79,18 +89,15 @@ export class StringService implements IStringService {
         while (str.length < length) {
             if (str.length == 0
                 && configuration?.mustStartWithAlphaNumeric) {
-
                 const randomNumber = this.numberService.getRandomInt(1000);
-                const currentType = (randomNumber < 500) 
+                const currentType = (randomNumber < 500)
                     ? CharacterType.LowerCase
                     : CharacterType.UpperCase;
 
-                const randomIndex = this.numberService
-                    .getRandomRange(0, str.length - 1);
                 str = this.appendString(str, this.getRandomCharacter(currentType),
-                     randomIndex);
+                    0);
             }
-            else 
+            else
                 str += this.getRandomCharacter(type);
         }
 
@@ -98,8 +105,8 @@ export class StringService implements IStringService {
             const randomIndex = this.numberService
                 .getRandomRange(0, str.length - 1);
             str = this.appendString(str, this
-                .getRandomCharacter(CharacterType.SpecialCharacters), 
-                    randomIndex);
+                .getRandomCharacter(CharacterType.SpecialCharacters),
+                randomIndex);
         }
 
         if (configuration?.mustHaveAtLeastOneNumber) {
