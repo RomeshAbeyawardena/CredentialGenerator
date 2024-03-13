@@ -17,13 +17,23 @@
     const stringService = new StringService(new NumberService());
 
     function generateUsername() {
+        const userSettings = store.user;
         username.value = stringService
-            .generateString(store.user.length, CharacterType.MixedNoSymbols);
+            .generateString(store.user.length, CharacterType.MixedNoSymbols, {
+                mustStartWithAlphaNumeric: userSettings.mustStartWithAlphaNumeric,
+                mustHaveAtLeastOneNumber: false,
+                mustHaveAtLeastOneSymbol: false
+            });
     }
 
     function generatePassword() {
+        const passwordSettings = store.password;
         password.value = stringService
-            .generateString(store.password.length, CharacterType.Mixed);
+            .generateString(store.password.length, CharacterType.Mixed, {
+                mustStartWithAlphaNumeric: false,
+                mustHaveAtLeastOneNumber: passwordSettings.mustHaveAtLeastOneNumber,
+                mustHaveAtLeastOneSymbol: passwordSettings.mustHaveAtLeastOneSymbol
+            });
     }
 
     function generateBoth() 

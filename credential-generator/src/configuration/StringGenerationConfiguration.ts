@@ -1,5 +1,5 @@
 export interface IStringGenerationConfiguration {
-    mustStartWithAlphaNumeric: boolean;
+    mustStartWithAlphaNumeric:boolean;
     mustHaveAtLeastOneSymbol:boolean;
     mustHaveAtLeastOneNumber:boolean;
 }

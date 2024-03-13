@@ -5,7 +5,7 @@ export interface IStringService {
     addSpacesToCamelCase(camelCaseValue: string): string;
     getRandomCharacter(type: CharacterType): string;
     generateString(length: number, type: CharacterType,
-        configuration?:IStringGenerationConfiguration): string;
+        configuration?: IStringGenerationConfiguration): string;
 }
 
 export class StringService implements IStringService {
@@ -34,16 +34,16 @@ export class StringService implements IStringService {
         return str;
     }
 
-    getRandomCharacter(type: CharacterType):string {
+    getRandomCharacter(type: CharacterType): string {
         const isMixed = type == CharacterType.Mixed
             || type == CharacterType.MixedNoSymbols;
-        
+
         let range = isMixed ? [] : getRange(type);
 
         if (!isMixed && range.length !== 2) {
             throw "Unable to determine range";
         }
-        
+
         if (!isMixed) {
             return String
                 .fromCharCode(this.numberService
@@ -68,27 +68,40 @@ export class StringService implements IStringService {
         }
     }
 
+    appendString(value: string, newValue: string, index: number) {
+        return "".concat(value.slice(0, index), newValue + value.slice(index));
+    }
+
     generateString(length: number, type: CharacterType,
-        configuration?:IStringGenerationConfiguration): string {
+        configuration?: IStringGenerationConfiguration): string {
         let str = "";
-        
+
         while (str.length < length) {
-            if(str.length == 0 
+            if (str.length == 0
                 && configuration?.mustStartWithAlphaNumeric) {
+
+                const randomNumber = this.numberService.getRandomInt(1000);
+                if (randomNumber < 500) {
+                    type = CharacterType.LowerCase;
+                }
+                else
                     type = CharacterType.UpperCase;
+
+                const randomIndex = this.numberService.getRandomRange(0, str.length - 1);
+                str = this.appendString(str, this.getRandomCharacter(type), randomIndex);
             }
-
-            str += this.getRandomCharacter(type);
         }
 
-        if(configuration?.mustHaveAtLeastOneSymbol) {
-            str += this
-                .getRandomCharacter(CharacterType.SpecialCharacters);
+        if (configuration?.mustHaveAtLeastOneSymbol) {
+            const randomIndex = this.numberService.getRandomRange(0, str.length - 1);
+            str = this.appendString(str, this
+                .getRandomCharacter(CharacterType.SpecialCharacters), randomIndex);
         }
 
-        if(configuration?.mustHaveAtLeastOneNumber) {
-            str += this
-                .getRandomCharacter(CharacterType.Numeric);
+        if (configuration?.mustHaveAtLeastOneNumber) {
+            const randomIndex = this.numberService.getRandomRange(0, str.length - 1);
+            str = this.appendString(str, this
+                .getRandomCharacter(CharacterType.Numeric), randomIndex);
         }
 
         return str;
