@@ -65,7 +65,8 @@ function onUserTypeSelection_Updated(e:any) : void {
                                 placeholder="Select Type" />
                 </div>
                 <div class="checkbox-control-group">
-                    <Checkbox />
+                    <Checkbox   v-model="store.user.mustStartWithAlphaNumeric"
+                                :binary="true" />
                     <label>Must have at least one symbol</label>
                 </div>
                 <h3>Password Settings</h3>
@@ -96,12 +97,14 @@ function onUserTypeSelection_Updated(e:any) : void {
                 </div>
                 <div class="checkbox-control-group">
                     <div class="flex align-items-center">
-                        <Checkbox />
+                        <Checkbox   v-model="store.password.mustHaveAtLeastOneNumber"
+                                    :binary="true" />
                         <label> Must have at least one number</label>
                     </div>
                 </div>
                 <div class="checkbox-control-group">
-                    <Checkbox />
+                    <Checkbox   v-model="store.password.mustHaveAtLeastOneSymbol"
+                                :binary="true" />
                     <label>Must have at least one symbol</label>
                 </div>
             </form>
