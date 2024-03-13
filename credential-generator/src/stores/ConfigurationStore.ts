@@ -10,8 +10,17 @@ export interface IConfigurationStore {
 }
 
 export const useConfigurationStore = defineStore("configuration", () : IConfigurationStore => {
-    const user:Ref<IUserConfigurationOptions> = ref({ length: 6, type: CharacterType.MixedNoSymbols });
-    const password:Ref<IPasswordConfigurationOptions> = ref({ length: 8, type: CharacterType.Mixed });
+    const user:Ref<IUserConfigurationOptions> = ref({ 
+        length: 6, 
+        mustStartWithAlphaNumeric: true,
+        type: CharacterType.MixedNoSymbols 
+    });
+    
+    const password:Ref<IPasswordConfigurationOptions> = ref({ 
+        length: 8,
+        mustHaveAtLeastOneNumber: false,
+        mustHaveAtLeastOneSymbol: false, 
+        type: CharacterType.Mixed });
 
     return {
         user,

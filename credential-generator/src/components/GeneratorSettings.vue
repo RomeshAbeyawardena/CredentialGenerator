@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
+import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
 import { useConfigurationStore } from '../stores/ConfigurationStore';
@@ -63,6 +64,10 @@ function onUserTypeSelection_Updated(e:any) : void {
                                 option-value="value"
                                 placeholder="Select Type" />
                 </div>
+                <div class="checkbox-control-group">
+                    <Checkbox />
+                    <label>Must have at least one symbol</label>
+                </div>
                 <h3>Password Settings</h3>
                 <div class="control-group">
                     <label>Character length: </label>
@@ -89,21 +94,45 @@ function onUserTypeSelection_Updated(e:any) : void {
                                 option-value="value"
                                 placeholder="Select Type" />
                 </div>
+                <div class="checkbox-control-group">
+                    <div class="flex align-items-center">
+                        <Checkbox />
+                        <label> Must have at least one number</label>
+                    </div>
+                </div>
+                <div class="checkbox-control-group">
+                    <Checkbox />
+                    <label>Must have at least one symbol</label>
+                </div>
             </form>
         </AccordionTab>
     </Accordion>
 </template>
-<style scoped>
+<style lang="scss" scoped>
     h3 {
         margin: 0;
         padding: 0;
+
+        &:not(:first-child) {
+            margin-top: 1rem;
+        }
+    }
+    div.control-group
+    {
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
     }
 
-    label {
-        display: block;
+    div.checkbox-control-group {
+        label {
+            margin-left: 0.5rem;
+        }
     }
+
     h3,
-    label,
+    div.checkbox-control-group,
     div.control-group {
         margin-bottom: 0.5rem;
     }
