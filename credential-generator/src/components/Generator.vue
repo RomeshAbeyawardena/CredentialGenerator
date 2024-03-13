@@ -17,11 +17,13 @@
     const stringService = new StringService(new NumberService());
 
     function generateUsername() {
-        username.value = stringService.generateString(store.user.length, CharacterType.MixedNoSymbols);
+        username.value = stringService
+            .generateString(store.user.length, CharacterType.MixedNoSymbols);
     }
 
     function generatePassword() {
-        password.value = stringService.generateString(store.password.length, CharacterType.Mixed);
+        password.value = stringService
+            .generateString(store.password.length, CharacterType.Mixed);
     }
 
     function generateBoth() 
@@ -39,7 +41,9 @@
             </InputGroupAddon>
             <InputText v-model="username" placeholder="Username" />
             <Button aria-label="Copy" icon="pi pi-copy" />
-            <Button aria-label="Generate" icon="pi pi-refresh" @click="generateUsername" />
+            <Button aria-label="Generate" 
+                    icon="pi pi-refresh" 
+                    @click="generateUsername" />
         </InputGroup>
         <InputGroup>
             <InputGroupAddon>
@@ -47,10 +51,14 @@
             </InputGroupAddon>
             <InputText v-model="password" placeholder="Password" />
             <Button aria-label="Copy" icon="pi pi-copy" />
-            <Button aria-label="Generate" icon="pi pi-refresh" @click="generatePassword" />
+            <Button aria-label="Generate" 
+                    icon="pi pi-refresh" 
+                    @click="generatePassword" />
         </InputGroup>
         <ButtonGroup>
-            <Button icon="pi pi-refresh" label="Generate" @click="generateBoth" />
+            <Button icon="pi pi-refresh" 
+                    label="Generate" 
+                    @click="generateBoth" />
             <Button severity="danger" label="Reset form" />
         </ButtonGroup>
     </form>

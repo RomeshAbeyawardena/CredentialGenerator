@@ -1,10 +1,11 @@
 import { CharacterType, getRange } from "../enumerations/CharacterType";
 import { INumberService } from "./NumberService";
-
+import { IStringGenerationConfiguration } from "../configuration/StringGenerationConfiguration";
 export interface IStringService {
     addSpacesToCamelCase(camelCaseValue: string): string;
     getRandomCharacter(type: CharacterType): string;
-    generateString(length: number, type: CharacterType): string;
+    generateString(length: number, type: CharacterType,
+        configuration?:IStringGenerationConfiguration): string;
 }
 
 export class StringService implements IStringService {
@@ -67,11 +68,27 @@ export class StringService implements IStringService {
         }
     }
 
-    generateString(length: number, type: CharacterType): string {
+    generateString(length: number, type: CharacterType,
+        configuration?:IStringGenerationConfiguration): string {
         let str = "";
         
         while (str.length < length) {
+            if(str.length == 0 
+                && configuration?.mustStartWithAlphaNumeric) {
+                    type = CharacterType.UpperCase;
+            }
+
             str += this.getRandomCharacter(type);
+        }
+
+        if(configuration?.mustHaveAtLeastOneSymbol) {
+            str += this
+                .getRandomCharacter(CharacterType.SpecialCharacters);
+        }
+
+        if(configuration?.mustHaveAtLeastOneNumber) {
+            str += this
+                .getRandomCharacter(CharacterType.Numeric);
         }
 
         return str;
