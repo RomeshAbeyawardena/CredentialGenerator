@@ -24,6 +24,14 @@ const store = useConfigurationStore();
 const userTypeSelection = ref(store.user.type as number);
 const passwordTypeSelection = ref(store.password.type as number);
 
+function onPaswordTypeSelection_Updated(e:any) : void {
+    store.password.type = e as CharacterType;
+}
+
+function onUserTypeSelection_Updated(e:any) : void {
+    store.user.type = e as CharacterType;
+}
+
 </script>
 <template>
     <Accordion :activeIndex="0">
@@ -33,7 +41,7 @@ const passwordTypeSelection = ref(store.password.type as number);
                 <div class="control-group">
                     <label>Character length: </label>
                     <InputNumber    class="w-full" 
-                                    v-model="store.user.length" 
+                                    v-model="store.user.length"
                                     buttonLayout="horizontal" 
                                     :step="1" 
                                     showButtons>
@@ -48,6 +56,7 @@ const passwordTypeSelection = ref(store.password.type as number);
                 <div class="control-group">
                     <label>Type:</label>
                     <Dropdown   class="w-full" 
+                                @update:modelValue="onUserTypeSelection_Updated"
                                 v-model="userTypeSelection" 
                                 :options="dataSource" 
                                 option-label="label" 
@@ -72,7 +81,8 @@ const passwordTypeSelection = ref(store.password.type as number);
                 </div>
                 <div class="control-group">
                     <label>Type:</label>
-                    <Dropdown   class="w-full" 
+                    <Dropdown   class="w-full"
+                                @update:modelValue="onPaswordTypeSelection_Updated" 
                                 v-model="passwordTypeSelection" 
                                 :options="dataSource" 
                                 option-label="label" 
