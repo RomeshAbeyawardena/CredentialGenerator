@@ -1,19 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, Ref } from "vue";
 import { CharacterType } from '../enumerations/CharacterType';
-
-export interface IConfigurationOptions {
-    length:number;
-    type: CharacterType;
-}
-
-export interface IUserConfigurationOptions extends IConfigurationOptions {
-    
-}
-
-export interface IPasswordConfigurationOptions extends IConfigurationOptions {
-
-}
+import { IUserConfigurationOptions } from '../configuration/UserConfigurationOptions';
+import { IPasswordConfigurationOptions } from '../configuration/PasswordConfigurationOptions';
 
 export interface IConfigurationStore {
     user: Ref<IUserConfigurationOptions>;
