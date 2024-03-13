@@ -4,7 +4,7 @@ import AccordionTab from 'primevue/accordiontab';
 import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
 import { useConfigurationStore } from '../stores/ConfigurationStore';
-import { inject, ref } from "vue";
+import { ref } from "vue";
 import { CharacterType } from '../enumerations/CharacterType';
 import { NumberService } from '../services/NumberService';
 import { StringService } from '../services/StringService';
@@ -21,38 +21,22 @@ const dataSource = ref(Object.values(CharacterType)
 
 const store = useConfigurationStore();
 
-const userTypeSelected: number = [store.user.type ];
-const userTypeselection = ref(CharacterType[userTypeSelected]);
-const passwordTypeSelection = ref(CharacterType[store.password.type]);
-
+const userTypeSelection = ref(store.user.type as number);
+const passwordTypeSelection = ref(store.password.type as number);
 
 </script>
 <template>
-    {{ selection }}
     <Accordion :activeIndex="0">
         <AccordionTab header="Configuration Settings">
             <form>
                 <h3>Username Settings</h3>
                 <div class="control-group">
-                    <label>Length: </label>
-                    <InputNumber class="w-full" v-model="store.user.length" buttonLayout="horizontal" :step="1" showButtons>
-                        <template #incrementbuttonicon>
-                            <span class="pi pi-plus" />
-                        </template>
-                        <template #decrementbuttonicon>
-                            <span class="pi pi-minus" />
-                        </template>
-                    </InputNumber><br />
-                </div>
-                <div class="control-group">
-                    <label>Type:</label>
-                    <Dropdown class="w-full" v-model="store.user.type" :options="dataSource" option-label="label" option-value="value"
-                        placeholder="Select Type" />
-                </div>
-                <h3>Password Settings</h3>
-                <div class="control-group">
-                    <label>Length: </label>
-                    <InputNumber class="w-full" v-model="store.password.length" buttonLayout="horizontal" :step="1" showButtons>
+                    <label>Character length: </label>
+                    <InputNumber    class="w-full" 
+                                    v-model="store.user.length" 
+                                    buttonLayout="horizontal" 
+                                    :step="1" 
+                                    showButtons>
                         <template #incrementbuttonicon>
                             <span class="pi pi-plus" />
                         </template>
@@ -64,7 +48,32 @@ const passwordTypeSelection = ref(CharacterType[store.password.type]);
                 <div class="control-group">
                     <label>Type:</label>
                     <Dropdown   class="w-full" 
-                                v-model="store.password.type" 
+                                v-model="userTypeSelection" 
+                                :options="dataSource" 
+                                option-label="label" 
+                                option-value="value"
+                                placeholder="Select Type" />
+                </div>
+                <h3>Password Settings</h3>
+                <div class="control-group">
+                    <label>Character length: </label>
+                    <InputNumber    class="w-full" 
+                                    v-model="store.password.length" 
+                                    buttonLayout="horizontal" 
+                                    :step="1" 
+                                    showButtons>
+                        <template #incrementbuttonicon>
+                            <span class="pi pi-plus" />
+                        </template>
+                        <template #decrementbuttonicon>
+                            <span class="pi pi-minus" />
+                        </template>
+                    </InputNumber>
+                </div>
+                <div class="control-group">
+                    <label>Type:</label>
+                    <Dropdown   class="w-full" 
+                                v-model="passwordTypeSelection" 
                                 :options="dataSource" 
                                 option-label="label" 
                                 option-value="value"
