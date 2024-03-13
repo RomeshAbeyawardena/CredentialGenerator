@@ -67,7 +67,7 @@ function onUserTypeSelection_Updated(e:any) : void {
                 <div class="checkbox-control-group">
                     <Checkbox   v-model="store.user.mustStartWithAlphaNumeric"
                                 :binary="true" />
-                    <label>Must have at least one symbol</label>
+                    <label>Must start with an alphanumeric character</label>
                 </div>
                 <h3>Password Settings</h3>
                 <div class="control-group">

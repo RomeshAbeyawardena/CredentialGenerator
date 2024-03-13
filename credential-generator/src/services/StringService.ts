@@ -81,25 +81,30 @@ export class StringService implements IStringService {
                 && configuration?.mustStartWithAlphaNumeric) {
 
                 const randomNumber = this.numberService.getRandomInt(1000);
-                if (randomNumber < 500) {
-                    type = CharacterType.LowerCase;
-                }
-                else
-                    type = CharacterType.UpperCase;
+                const currentType = (randomNumber < 500) 
+                    ? CharacterType.LowerCase
+                    : CharacterType.UpperCase;
 
-                const randomIndex = this.numberService.getRandomRange(0, str.length - 1);
-                str = this.appendString(str, this.getRandomCharacter(type), randomIndex);
+                const randomIndex = this.numberService
+                    .getRandomRange(0, str.length - 1);
+                str = this.appendString(str, this.getRandomCharacter(currentType),
+                     randomIndex);
             }
+            else 
+                str += this.getRandomCharacter(type);
         }
 
         if (configuration?.mustHaveAtLeastOneSymbol) {
-            const randomIndex = this.numberService.getRandomRange(0, str.length - 1);
+            const randomIndex = this.numberService
+                .getRandomRange(0, str.length - 1);
             str = this.appendString(str, this
-                .getRandomCharacter(CharacterType.SpecialCharacters), randomIndex);
+                .getRandomCharacter(CharacterType.SpecialCharacters), 
+                    randomIndex);
         }
 
         if (configuration?.mustHaveAtLeastOneNumber) {
-            const randomIndex = this.numberService.getRandomRange(0, str.length - 1);
+            const randomIndex = this.numberService
+                .getRandomRange(0, str.length - 1);
             str = this.appendString(str, this
                 .getRandomCharacter(CharacterType.Numeric), randomIndex);
         }
