@@ -9,18 +9,35 @@
     import { GenerationComponent } from '../enumerations/GenerationComponents';
     import { useNotificationStore } from '../stores/NotificationStore';
     import { useCredentialStore } from '../stores/CredentialStore';
-
+    
+    const disableAdd = ref(false);
     const username = ref("");
     const password = ref("");
     const store = useConfigurationStore();
     const credentialStore = useCredentialStore();
     
-    function generateUsername() {         
-        username.value = store.generateComponent(GenerationComponent.Username);
+    function generateUsername_click()
+    {
+        generateUsername(false);
     }
 
-    function generatePassword() {
+    function generateUsername(isForBoth:boolean) {         
+        username.value = store.generateComponent(GenerationComponent.Username);
+        if(!isForBoth)
+        {
+            disableAdd.value = false;
+        }
+    }
+    function generatePassword_click()
+    {
+        generatePassword(false);
+    }
+    function generatePassword(isForBoth:boolean) {
         password.value = store.generateComponent(GenerationComponent.Password);
+        if(!isForBoth)
+        {
+            disableAdd.value = false;
+        }
     }
 
     const notificationStore = useNotificationStore();
@@ -44,15 +61,17 @@
 
     function generateBoth() 
     {
-        generateUsername();
-        generatePassword();
+        generateUsername(true);
+        generatePassword(true);
         addCredential();
+        disableAdd.value = true;
     }
 
     function resetForm()
     {
         username.value = "";
         password.value = "";
+        disableAdd.value = false;
     }
 
     function addCredential() {
@@ -78,7 +97,7 @@
                     @click="copyToClipboard(GenerationComponent.Username)" />
             <Button aria-label="Generate" 
                     icon="pi pi-refresh" 
-                    @click="generateUsername" />
+                    @click="generateUsername_click" />
         </InputGroup>
         <InputGroup>
             <InputGroupAddon>
@@ -93,13 +112,14 @@
                     @click="copyToClipboard(GenerationComponent.Password)" />
             <Button aria-label="Generate" 
                     icon="pi pi-refresh" 
-                    @click="generatePassword" />
+                    @click="generatePassword_click" />
         </InputGroup>
         <ButtonGroup>
             <Button icon="pi pi-refresh" 
                     label="Generate" 
                     @click="generateBoth" />
-            <Button severity="info" 
+            <Button :disabled="disableAdd"
+                    severity="info" 
                     icon="pi pi-plus-circle"
                     label="Add"
                     @click="addCredential" />
