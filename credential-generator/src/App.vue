@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CredentialList from './components/CredentialList.vue';
 import Generator from './components/Generator.vue';
 import GeneratorSettings from './components/GeneratorSettings.vue';
 import Toast from 'primevue/toast';
@@ -17,4 +18,5 @@ provide<IStringService>(Services.StringService, new StringService(numberService)
   <Toast :message="store.notification" :position="store.position" />
   <GeneratorSettings />
   <Generator />
+  <CredentialList />
 </template>

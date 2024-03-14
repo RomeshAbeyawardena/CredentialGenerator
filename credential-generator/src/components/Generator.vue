@@ -8,10 +8,12 @@
     import { useConfigurationStore } from '../stores/ConfigurationStore';
     import { GenerationComponent } from '../enumerations/GenerationComponents';
     import { useNotificationStore } from '../stores/NotificationStore';
-    
+    import { useCredentialStore } from '../stores/CredentialStore';
+
     const username = ref("");
     const password = ref("");
     const store = useConfigurationStore();
+    const credentialStore = useCredentialStore();
     
     function generateUsername() {         
         username.value = store.generateComponent(GenerationComponent.Username);
@@ -44,6 +46,10 @@
     {
         generateUsername();
         generatePassword();
+        credentialStore.addCredential({
+            username: username.value,
+            password: password.value,
+        })
     }
 
 </script>
