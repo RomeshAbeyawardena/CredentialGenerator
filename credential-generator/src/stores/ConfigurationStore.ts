@@ -24,7 +24,7 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
     });
 
     const stringService = inject<IStringService>(Services.StringService);
-    console.log(stringService);
+    
     const password: Ref<IPasswordConfigurationOptions> = ref({
         length: 8,
         mustHaveAtLeastOneNumber: false,

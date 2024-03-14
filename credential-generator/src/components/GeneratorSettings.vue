@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
+
 import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
@@ -28,8 +27,7 @@ function onUserTypeSelection_Updated(e:any) : void {
 
 </script>
 <template>
-    <Accordion :activeIndex="0">
-        <AccordionTab header="Configuration Settings">
+
             <form>
                 <h3>Username Settings</h3>
                 <div class="control-group">
@@ -108,8 +106,6 @@ function onUserTypeSelection_Updated(e:any) : void {
                     <label for="mustHaveAtLeastOneSymbol">Must have at least one symbol</label>
                 </div>
             </form>
-        </AccordionTab>
-    </Accordion>
 </template>
 <style lang="scss" scoped>
     h3 {
