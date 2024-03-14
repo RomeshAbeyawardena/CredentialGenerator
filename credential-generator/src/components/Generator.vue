@@ -46,10 +46,20 @@
     {
         generateUsername();
         generatePassword();
+        addCredential();
+    }
+
+    function resetForm()
+    {
+        username.value = "";
+        password.value = "";
+    }
+
+    function addCredential() {
         credentialStore.addCredential({
             username: username.value,
             password: password.value,
-        })
+        });
     }
 
 </script>
@@ -89,7 +99,14 @@
             <Button icon="pi pi-refresh" 
                     label="Generate" 
                     @click="generateBoth" />
-            <Button severity="danger" label="Reset form" />
+            <Button severity="info" 
+                    icon="pi pi-plus-circle"
+                    @click="addCredential"
+                    label="Add to list"/>
+            <Button severity="danger"
+                    icon="pi pi-times"
+                    label="Reset form"
+                    @click="resetForm" />
         </ButtonGroup>
     </form>
 </template>
