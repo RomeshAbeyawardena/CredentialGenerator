@@ -44,12 +44,12 @@
             case GenerationComponent.Username:
                 t = navigator.clipboard.writeText(username.value);
                 await t;
-                notificationStore.displayMessage("Text copied!")
+                notificationStore.displayMessage("Text copied!", "Text has been copied to the clipboard")
                 return t;
             case GenerationComponent.Password:
                 t =  navigator.clipboard.writeText(password.value);
                 await t;
-                notificationStore.displayMessage("Text copied!")
+                notificationStore.displayMessage("Text copied!", "Text has been copied to the clipboard")
                 return t;
             default:
                 return await new Promise(() => {});
@@ -72,6 +72,7 @@
             <InputText v-model="username" placeholder="Username" />
             <Button aria-label="Copy" 
                     icon="pi pi-copy"
+                    severity="info"
                     @click="copyToClipboard(GenerationComponent.Username)" />
             <Button aria-label="Generate" 
                     icon="pi pi-refresh" 
@@ -84,6 +85,7 @@
             <InputText v-model="password" placeholder="Password" />
             <Button aria-label="Copy" 
                     icon="pi pi-copy"
+                    severity="info"
                     @click="copyToClipboard(GenerationComponent.Password)" />
             <Button aria-label="Generate" 
                     icon="pi pi-refresh" 

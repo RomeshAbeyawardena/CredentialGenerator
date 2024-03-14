@@ -21,15 +21,20 @@ export const useNotificationStore = defineStore("notification", (): INotificatio
         return {
             life: lifetime.value,
             summary: message.value,
+            detail: description.value,
             severity: severity.value,
         };
     });
 
-    function displayMessage(msg:string, 
+    function displayMessage(msg:string, desc?:string,
         pos?:"top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right" | "center" | undefined, 
         sev?: "success" | "info" | "warn" | "error" | "secondary" | "contrast" | undefined)
     {
         message.value = msg;
+        if(desc != undefined)
+        {
+            description.value = desc;
+        }
         if(pos != undefined) 
             position.value = pos;
         
