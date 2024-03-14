@@ -40,8 +40,9 @@ function onUserTypeSelection_Updated(e:any) : void {
             <form>
                 <h3>Username Settings</h3>
                 <div class="control-group">
-                    <label>Character length: </label>
+                    <label for="characterLength">Character length: </label>
                     <InputNumber    class="w-full" 
+                                    input-id="characterLength"
                                     v-model="store.user.length"
                                     buttonLayout="horizontal" 
                                     :step="1" 
@@ -55,26 +56,29 @@ function onUserTypeSelection_Updated(e:any) : void {
                     </InputNumber>
                 </div>
                 <div class="control-group">
-                    <label>Type:</label>
+                    <label for="characterType">Type:</label>
                     <Dropdown   class="w-full" 
                                 @update:modelValue="onUserTypeSelection_Updated"
                                 v-model="userTypeSelection" 
                                 :options="dataSource" 
+                                input-id="characterType"
                                 option-label="label" 
                                 option-value="value"
                                 placeholder="Select Type" />
                 </div>
                 <div class="checkbox-control-group">
                     <Checkbox   v-model="store.user.mustStartWithAlphaNumeric"
+                                input-id="mustStartWithAlphaNumeric"
                                 :binary="true" />
-                    <label>Must start with an alphanumeric character</label>
+                    <label for="mustStartWithAlphaNumeric">Must start with an alphanumeric character</label>
                 </div>
                 <h3>Password Settings</h3>
                 <div class="control-group">
-                    <label>Character length: </label>
+                    <label for="passwordCharacterLength">Character length: </label>
                     <InputNumber    class="w-full" 
                                     v-model="store.password.length" 
                                     buttonLayout="horizontal" 
+                                    input-id="passwordCharacterLength"
                                     :step="1" 
                                     showButtons>
                         <template #incrementbuttonicon>
@@ -86,11 +90,12 @@ function onUserTypeSelection_Updated(e:any) : void {
                     </InputNumber>
                 </div>
                 <div class="control-group">
-                    <label>Type:</label>
+                    <label for="passwordCharacterType">Type:</label>
                     <Dropdown   class="w-full"
                                 @update:modelValue="onPaswordTypeSelection_Updated" 
                                 v-model="passwordTypeSelection" 
                                 :options="dataSource" 
+                                input-id="passwordCharacterType"
                                 option-label="label" 
                                 option-value="value"
                                 placeholder="Select Type" />
@@ -98,14 +103,16 @@ function onUserTypeSelection_Updated(e:any) : void {
                 <div class="checkbox-control-group">
                     <div class="flex align-items-center">
                         <Checkbox   v-model="store.password.mustHaveAtLeastOneNumber"
+                                    input-id="mustHaveAtLeastOneNumber"
                                     :binary="true" />
-                        <label> Must have at least one number</label>
+                        <label for="mustHaveAtLeastOneNumber">Must have at least one number</label>
                     </div>
                 </div>
                 <div class="checkbox-control-group">
                     <Checkbox   v-model="store.password.mustHaveAtLeastOneSymbol"
-                                :binary="true" />
-                    <label>Must have at least one symbol</label>
+                                :binary="true"
+                                input-id="mustHaveAtLeastOneSymbol" />
+                    <label for="mustHaveAtLeastOneSymbol">Must have at least one symbol</label>
                 </div>
             </form>
         </AccordionTab>

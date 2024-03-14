@@ -18,23 +18,17 @@
     const stringService = new StringService(numberService);
     
     function generateUsername() {
-        const userSettings = store.user;
         username.value = stringService
-            .generateString(store.user.length, store.user.type, {
-                mustStartWithAlphaNumeric: userSettings.mustStartWithAlphaNumeric,
-                mustHaveAtLeastOneNumber: false,
-                mustHaveAtLeastOneSymbol: false
-            });
+            .generateString(store.user.length, store.user.type, 
+                store.getConfiguration(GenerationComponent.Username));
     }
 
+    
+
     function generatePassword() {
-        const passwordSettings = store.password;
         password.value = stringService
-            .generateString(store.password.length, store.password.type, {
-                mustStartWithAlphaNumeric: false,
-                mustHaveAtLeastOneNumber: passwordSettings.mustHaveAtLeastOneNumber,
-                mustHaveAtLeastOneSymbol: passwordSettings.mustHaveAtLeastOneSymbol
-            });
+            .generateString(store.password.length, store.password.type, 
+            store.getConfiguration(GenerationComponent.Password));
     }
 
     const notificationStore = useNotificationStore();
@@ -69,7 +63,9 @@
             <InputGroupAddon>
                 <i icon="pi pi-copy" class="pi pi-user"></i>
             </InputGroupAddon>
-            <InputText v-model="username" placeholder="Username" />
+            <InputText  id="username"
+                        v-model="username" 
+                        placeholder="Username" />
             <Button aria-label="Copy" 
                     icon="pi pi-copy"
                     severity="info"
@@ -82,7 +78,9 @@
             <InputGroupAddon>
                 <i class="pi pi-key"></i>
             </InputGroupAddon>
-            <InputText v-model="password" placeholder="Password" />
+            <InputText  id="password"
+                        v-model="password" 
+                        placeholder="Password" />
             <Button aria-label="Copy" 
                     icon="pi pi-copy"
                     severity="info"
