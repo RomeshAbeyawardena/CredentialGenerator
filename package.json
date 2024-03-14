@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "@types/luxon": "^3.4.2",
     "@types/uuid": "^9.0.8",
+    "luxon": "^3.4.4",
     "uuid": "^9.0.1"
   }
 }
