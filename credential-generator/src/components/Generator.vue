@@ -100,6 +100,7 @@
                 <i icon="pi pi-copy" class="pi pi-user"></i>
             </InputGroupAddon>
             <InputText  id="username"
+                        :disabled="true"
                         v-model="username" 
                         placeholder="Username" />
             <Button aria-label="Copy" 
@@ -116,6 +117,7 @@
                 <i class="pi pi-key"></i>
             </InputGroupAddon>
             <InputText  id="password"
+                        :disabled="true"
                         v-model="password" 
                         placeholder="Password" />
             <Button aria-label="Copy"
