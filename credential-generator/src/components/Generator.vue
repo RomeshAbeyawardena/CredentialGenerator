@@ -9,6 +9,7 @@
     import { GenerationComponent } from '../enumerations/GenerationComponents';
     import { StringService } from '../services/StringService';
     import { NumberService } from '../services/NumberService';
+    import { useNotificationStore } from '../stores/NotificationStore';
 
     const username = ref("");
     const password = ref("");
@@ -36,12 +37,20 @@
             });
     }
 
+    const notificationStore = useNotificationStore();
     async function copyToClipboard(component: GenerationComponent){
+        let t:Promise<void>;
         switch (component) {
             case GenerationComponent.Username:
-                return await navigator.clipboard.writeText(username.value);       
+                t = navigator.clipboard.writeText(username.value);
+                await t;
+                notificationStore.displayMessage("Text copied!")
+                return t;
             case GenerationComponent.Password:
-                return await navigator.clipboard.writeText(password.value);
+                t =  navigator.clipboard.writeText(password.value);
+                await t;
+                notificationStore.displayMessage("Text copied!")
+                return t;
             default:
                 return await new Promise(() => {});
         }
