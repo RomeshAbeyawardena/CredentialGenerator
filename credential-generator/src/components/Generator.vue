@@ -20,7 +20,7 @@
     function generateUsername() {
         const userSettings = store.user;
         username.value = stringService
-            .generateString(store.user.length, CharacterType.MixedNoSymbols, {
+            .generateString(store.user.length, store.user.type, {
                 mustStartWithAlphaNumeric: userSettings.mustStartWithAlphaNumeric,
                 mustHaveAtLeastOneNumber: false,
                 mustHaveAtLeastOneSymbol: false
@@ -30,7 +30,7 @@
     function generatePassword() {
         const passwordSettings = store.password;
         password.value = stringService
-            .generateString(store.password.length, CharacterType.Mixed, {
+            .generateString(store.password.length, store.password.type, {
                 mustStartWithAlphaNumeric: false,
                 mustHaveAtLeastOneNumber: passwordSettings.mustHaveAtLeastOneNumber,
                 mustHaveAtLeastOneSymbol: passwordSettings.mustHaveAtLeastOneSymbol
