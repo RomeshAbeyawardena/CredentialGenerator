@@ -79,6 +79,17 @@
             username: username.value,
             password: password.value,
         });
+
+        disableAdd.value = true;
+    }
+
+    function hasValue(component: GenerationComponent) {
+        switch(component) {
+            case GenerationComponent.Password:
+                return password.value.length > 0;
+            case GenerationComponent.Username:
+                return username.value.length > 0;
+        }
     }
 
 </script>
@@ -92,6 +103,7 @@
                         v-model="username" 
                         placeholder="Username" />
             <Button aria-label="Copy" 
+                    :disabled="!hasValue(GenerationComponent.Username)"
                     icon="pi pi-copy"
                     severity="info"
                     @click="copyToClipboard(GenerationComponent.Username)" />
@@ -106,7 +118,8 @@
             <InputText  id="password"
                         v-model="password" 
                         placeholder="Password" />
-            <Button aria-label="Copy" 
+            <Button aria-label="Copy"
+                    :disabled="!hasValue(GenerationComponent.Password)"
                     icon="pi pi-copy"
                     severity="info"
                     @click="copyToClipboard(GenerationComponent.Password)" />
