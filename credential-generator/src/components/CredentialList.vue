@@ -4,8 +4,12 @@ import Column from 'primevue/column';
 import { useCredentialStore } from '../stores/CredentialStore';
 import { useClipboardStore } from '../stores/ClipboardStore';
 import { DateTime } from "luxon";
+import { storeToRefs } from 'pinia';
 
 const store = useCredentialStore();
+
+const { credentials } = storeToRefs(store);
+
 const clipboardStore = useClipboardStore();
 
 async function copyToClipboard(text:string) {
@@ -17,7 +21,7 @@ function formateDate(value:Date) {
 }
 </script>
 <template>
-<DataTable :value="store.credentials">
+<DataTable :value="credentials">
     <Column field="id" header="ID"></Column>
     <Column field="username" header="User name">
         <template #body="slotProps">

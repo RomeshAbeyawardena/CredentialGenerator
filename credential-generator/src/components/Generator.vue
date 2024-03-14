@@ -9,7 +9,12 @@
     import { useGeneratorStore } from '../stores/GeneratorStore';
     import { useCredentialStore } from '../stores/CredentialStore';
     import { useClipboardStore } from '../stores/ClipboardStore';
+    import { storeToRefs } from 'pinia';
+
     const generationStore = useGeneratorStore();
+
+    const { disableAdd, username, password } = storeToRefs(generationStore);
+
     const clipboardStore = useClipboardStore();
 
     const store = useConfigurationStore();
@@ -21,7 +26,8 @@
     }
 
     function generateUsername(isForBoth:boolean) {         
-        generationStore.username = store.generateComponent(GenerationComponent.Username);
+        username.value = store
+            .generateComponent(GenerationComponent.Username);
         if(!isForBoth)
         {
             generationStore.disableAdd = false;
@@ -32,20 +38,20 @@
         generatePassword(false);
     }
     function generatePassword(isForBoth:boolean) {
-        generationStore.password = store
+        password.value = store
             .generateComponent(GenerationComponent.Password);
         if(!isForBoth)
         {
-            generationStore.disableAdd = false;
+            disableAdd.value = false;
         }
     }
 
     async function copyToClipboard(component: GenerationComponent) {
         switch (component) {
             case GenerationComponent.Username:
-                return await clipboardStore.copyText(generationStore.username);
+                return await clipboardStore.copyText(username.value);
             case GenerationComponent.Password:
-                return await clipboardStore.copyText(generationStore.password);
+                return await clipboardStore.copyText(password.value);
             default:
                 return await new Promise(() => {});
         }
@@ -56,31 +62,31 @@
         generateUsername(true);
         generatePassword(true);
         addCredential();
-        generationStore.disableAdd = true;
+        disableAdd.value = true;
     }
 
     function resetForm()
     {
-        generationStore.username = "";
-        generationStore.password = "";
-        generationStore.disableAdd = true;
+        username.value = "";
+        password.value = "";
+        disableAdd.value = true;
     }
 
     function addCredential() {
         credentialStore.addCredential({
-            username: generationStore.username,
-            password: generationStore.password,
+            username: username.value,
+            password: password.value,
         });
 
-        generationStore.disableAdd = true;
+        disableAdd.value = true;
     }
 
     function hasValue(component: GenerationComponent) {
         switch(component) {
             case GenerationComponent.Password:
-                return generationStore.password.length > 0;
+                return password.value.length > 0;
             case GenerationComponent.Username:
-                return generationStore.username.length > 0;
+                return username.value.length > 0;
         }
     }
 
@@ -93,7 +99,7 @@
             </InputGroupAddon>
             <InputText  id="username"
                         :disabled="true"
-                        v-model="generationStore.username" 
+                        v-model="username" 
                         placeholder="Username" />
             <Button aria-label="Copy" 
                     :disabled="!hasValue(GenerationComponent.Username)"
@@ -110,7 +116,7 @@
             </InputGroupAddon>
             <InputText  id="password"
                         :disabled="true"
-                        v-model="generationStore.password" 
+                        v-model="password" 
                         placeholder="Password" />
             <Button aria-label="Copy"
                     :disabled="!hasValue(GenerationComponent.Password)"
