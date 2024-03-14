@@ -101,8 +101,8 @@
                     @click="generateBoth" />
             <Button severity="info" 
                     icon="pi pi-plus-circle"
-                    @click="addCredential"
-                    label="Add to list"/>
+                    label="Add"
+                    @click="addCredential" />
             <Button severity="danger"
                     icon="pi pi-times"
                     label="Reset form"
@@ -110,7 +110,17 @@
         </ButtonGroup>
     </form>
 </template>
-<style scoped>
+<style>
+
+    @media (max-width: 576px) {
+        button.p-button
+        {
+            span.p-button-label
+            {
+                display: none;
+            }
+        }
+    }
     span.p-button-group {
         display:block;
         text-align: center;
