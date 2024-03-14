@@ -7,7 +7,6 @@
     import { ref } from "vue";
     import { useConfigurationStore } from '../stores/ConfigurationStore';
     import { GenerationComponent } from '../enumerations/GenerationComponents';
-    import { CharacterType } from '../enumerations/CharacterType';
     import { StringService } from '../services/StringService';
     import { NumberService } from '../services/NumberService';
 
