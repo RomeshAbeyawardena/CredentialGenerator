@@ -6,7 +6,7 @@
     import InputGroupAddon from 'primevue/inputgroupaddon';
     import { ref } from "vue";
     import { useConfigurationStore } from '../stores/ConfigurationStore';
-
+    import { GenerationComponent } from '../enumerations/GenerationComponents';
     import { CharacterType } from '../enumerations/CharacterType';
     import { StringService } from '../services/StringService';
     import { NumberService } from '../services/NumberService';
@@ -17,8 +17,6 @@
     const numberService = new NumberService();
     const stringService = new StringService(numberService);
     
-console.log(numberService.fill(0, 10));
-
     function generateUsername() {
         const userSettings = store.user;
         username.value = stringService
@@ -39,6 +37,17 @@ console.log(numberService.fill(0, 10));
             });
     }
 
+    async function copyToClipboard(component: GenerationComponent){
+        switch (component) {
+            case GenerationComponent.Username:
+                return await navigator.clipboard.writeText(username.value);       
+            case GenerationComponent.Password:
+                return await navigator.clipboard.writeText(password.value);
+            default:
+                return await new Promise(() => {});
+        }
+    }
+
     function generateBoth() 
     {
         generateUsername();
@@ -53,7 +62,9 @@ console.log(numberService.fill(0, 10));
                 <i icon="pi pi-copy" class="pi pi-user"></i>
             </InputGroupAddon>
             <InputText v-model="username" placeholder="Username" />
-            <Button aria-label="Copy" icon="pi pi-copy" />
+            <Button aria-label="Copy" 
+                    icon="pi pi-copy"
+                    @click="copyToClipboard(GenerationComponent.Username)" />
             <Button aria-label="Generate" 
                     icon="pi pi-refresh" 
                     @click="generateUsername" />
@@ -63,7 +74,9 @@ console.log(numberService.fill(0, 10));
                 <i class="pi pi-key"></i>
             </InputGroupAddon>
             <InputText v-model="password" placeholder="Password" />
-            <Button aria-label="Copy" icon="pi pi-copy" />
+            <Button aria-label="Copy" 
+                    icon="pi pi-copy"
+                    @click="copyToClipboard(GenerationComponent.Password)" />
             <Button aria-label="Generate" 
                     icon="pi pi-refresh" 
                     @click="generatePassword" />
