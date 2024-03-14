@@ -13,8 +13,18 @@ function formateDate(value:Date) {
 <template>
 <DataTable :value="store.credentials">
     <Column field="id" header="ID"></Column>
-    <Column field="username" header="User name"></Column>
-    <Column field="password" header="Password"></Column>
+    <Column field="username" header="User name">
+        <template #body="slotProps">
+            {{ slotProps.data.username }}
+            <i icon="pi pi-copy" class="pi pi-copy"></i>
+        </template>
+    </Column>
+    <Column field="password" header="Password">
+        <template #body="slotProps">
+            {{ slotProps.data.password }}
+            <i icon="pi pi-copy" class="pi pi-copy"></i>
+        </template>
+    </Column>
     <Column field="created" header="Created">
         <template #body="slotProps">
             {{ formateDate(slotProps.data.created) }}

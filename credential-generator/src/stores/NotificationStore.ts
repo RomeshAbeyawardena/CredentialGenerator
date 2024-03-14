@@ -6,7 +6,9 @@ import { ToastMessageOptions } from 'primevue/toast';
 
 export interface INotificationStore extends INotification {
     notification:ComputedRef<ToastMessageOptions>;
-    displayMessage(message:string, position?:string, severity?:string): void;
+    displayMessage(msg:string, desc?:string,
+        pos?:"top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right" | "center" | undefined, 
+        sev?: "success" | "info" | "warn" | "error" | "secondary" | "contrast" | undefined): void;
 }
 
 export const useNotificationStore = defineStore("notification", (): INotificationStore => {
@@ -52,5 +54,5 @@ export const useNotificationStore = defineStore("notification", (): INotificatio
         notification,
         position,
         severity
-    }
+    };
 });

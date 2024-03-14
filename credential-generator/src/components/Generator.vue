@@ -4,15 +4,14 @@
     import InputText from 'primevue/inputtext';
     import InputGroup from 'primevue/inputgroup';
     import InputGroupAddon from 'primevue/inputgroupaddon';
-    import { ref } from "vue";
     import { useConfigurationStore } from '../stores/ConfigurationStore';
     import { GenerationComponent } from '../enumerations/GenerationComponents';
     import { useGeneratorStore } from '../stores/GeneratorStore';
-    import { useNotificationStore } from '../stores/NotificationStore';
     import { useCredentialStore } from '../stores/CredentialStore';
-    
+    import { useClipboardStore } from '../stores/ClipboardStore';
     const generationStore = useGeneratorStore();
-    
+    const clipboardStore = useClipboardStore();
+
     const store = useConfigurationStore();
     const credentialStore = useCredentialStore();
     
@@ -41,20 +40,12 @@
         }
     }
 
-    const notificationStore = useNotificationStore();
-    async function copyToClipboard(component: GenerationComponent){
-        let t:Promise<void>;
+    async function copyToClipboard(component: GenerationComponent) {
         switch (component) {
             case GenerationComponent.Username:
-                t = navigator.clipboard.writeText(generationStore.username);
-                await t;
-                notificationStore.displayMessage("Text copied!", "Text has been copied to the clipboard")
-                return t;
+                return await clipboardStore.copyText(generationStore.username);
             case GenerationComponent.Password:
-                t =  navigator.clipboard.writeText(generationStore.password);
-                await t;
-                notificationStore.displayMessage("Text copied!", "Text has been copied to the clipboard")
-                return t;
+                return await clipboardStore.copyText(generationStore.password);
             default:
                 return await new Promise(() => {});
         }
@@ -81,7 +72,7 @@
             password: generationStore.password,
         });
 
-        disableAdd.value = true;
+        generationStore.disableAdd = true;
     }
 
     function hasValue(component: GenerationComponent) {
@@ -98,7 +89,7 @@
     <form>
         <InputGroup>
             <InputGroupAddon>
-                <i icon="pi pi-copy" class="pi pi-user"></i>
+                <i icon="pi pi-user" class="pi pi-user"></i>
             </InputGroupAddon>
             <InputText  id="username"
                         :disabled="true"
@@ -165,4 +156,4 @@
     div.p-inputgroup {
         margin-bottom: 0.5rem;
     }
-</style>
+</style>../services/ClipboardStore
