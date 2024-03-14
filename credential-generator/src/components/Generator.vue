@@ -7,28 +7,18 @@
     import { ref } from "vue";
     import { useConfigurationStore } from '../stores/ConfigurationStore';
     import { GenerationComponent } from '../enumerations/GenerationComponents';
-    import { StringService } from '../services/StringService';
-    import { NumberService } from '../services/NumberService';
     import { useNotificationStore } from '../stores/NotificationStore';
-
+    
     const username = ref("");
     const password = ref("");
     const store = useConfigurationStore();
-    const numberService = new NumberService();
-    const stringService = new StringService(numberService);
     
-    function generateUsername() {
-        username.value = stringService
-            .generateString(store.user.length, store.user.type, 
-                store.getConfiguration(GenerationComponent.Username));
+    function generateUsername() {         
+        username.value = store.generateComponent(GenerationComponent.Username);
     }
 
-    
-
     function generatePassword() {
-        password.value = stringService
-            .generateString(store.password.length, store.password.type, 
-            store.getConfiguration(GenerationComponent.Password));
+        password.value = store.generateComponent(GenerationComponent.Password);
     }
 
     const notificationStore = useNotificationStore();

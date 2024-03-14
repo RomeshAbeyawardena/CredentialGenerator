@@ -6,19 +6,12 @@ import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
 import { useConfigurationStore } from '../stores/ConfigurationStore';
 import { ref } from "vue";
-import { CharacterType } from '../enumerations/CharacterType';
+import { CharacterType, toList } from '../enumerations/CharacterType';
 import { NumberService } from '../services/NumberService';
 import { StringService } from '../services/StringService';
 
 const stringService = new StringService(new NumberService());
-const dataSource = ref(Object.values(CharacterType)
-                             .filter(value => typeof value === 'string')
-                             .map((e, i) => {
-    return {
-        value: i,
-        label: stringService.addSpacesToCamelCase(e.toLocaleString())
-    }
-}));
+const dataSource = toList(stringService);
 
 const store = useConfigurationStore();
 

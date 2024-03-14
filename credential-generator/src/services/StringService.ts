@@ -96,7 +96,6 @@ export class StringService implements IStringService {
         configuration?: IStringGenerationConfiguration): string {
         let str = "";
         
-        console.log(configuration);
         while (str.length < length) {
             if (str.length == 0 && 
                 (this.hasCharCodeRange(str, getRange(CharacterType.LowerCase))

@@ -1,12 +1,16 @@
 import { defineStore } from 'pinia'
-import { computed, ComputedRef, ref, Ref } from "vue";
+import { computed, ComputedRef, inject, ref, Ref } from "vue";
 import { CharacterType } from '../enumerations/CharacterType';
 import { IUserConfigurationOptions } from '../configuration/UserConfigurationOptions';
 import { IStringGenerationConfiguration } from '../configuration/StringGenerationConfiguration';
 import { IPasswordConfigurationOptions } from '../configuration/PasswordConfigurationOptions';
 import { GenerationComponent } from '../enumerations/GenerationComponents';
+import { IStringService } from '../services/StringService';
+import { Services } from '../services/Services';
+import { IConfigurationOptions } from '../configuration/ConfigurationOptions';
 
 export interface IConfigurationStore {
+    generateComponent(component:GenerationComponent):string;
     getConfiguration: ComputedRef<(component: GenerationComponent) => IStringGenerationConfiguration>;
     user: Ref<IUserConfigurationOptions>;
     password: Ref<IPasswordConfigurationOptions>;
@@ -19,6 +23,8 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
         type: CharacterType.MixedNoSymbols
     });
 
+    const stringService = inject<IStringService>(Services.StringService);
+    console.log(stringService);
     const password: Ref<IPasswordConfigurationOptions> = ref({
         length: 8,
         mustHaveAtLeastOneNumber: false,
@@ -26,7 +32,8 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
         type: CharacterType.Mixed
     });
 
-    const getConfiguration = computed(() => (component: GenerationComponent): IStringGenerationConfiguration => {
+    function getConfig(component: GenerationComponent): IStringGenerationConfiguration
+    {
         switch (component) {
             case GenerationComponent.Username:
                 return {
@@ -41,10 +48,34 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
                     mustHaveAtLeastOneSymbol: password.value.mustHaveAtLeastOneSymbol
                 };
         };
+    }
+
+    const getConfiguration = computed(() => (component: GenerationComponent): IStringGenerationConfiguration => {
+        return getConfig(component);
     });
 
+    function generateComponent(component:GenerationComponent)
+    {
+        if(stringService == undefined){
+            throw 'Injection failed';
+        }
+
+        let configuration : IConfigurationOptions 
+        switch(component){
+            case GenerationComponent.Password:
+                configuration = password.value;
+                break;
+            case GenerationComponent.Username:
+                configuration = user.value;
+                break;
+        }
+
+        return stringService
+            .generateString(configuration.length, configuration.type, getConfig(component));
+    }
 
     return {
+        generateComponent,
         getConfiguration,
         user,
         password
