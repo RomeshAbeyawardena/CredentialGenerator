@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ICredential } from "../Credential/Credential";
+import { ICredential } from "../credential";
 import { ref, Ref } from "vue";
 import { v4 } from "uuid";
 export interface ICredentialStore {

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref, ComputedRef } from "vue";
 import { useToast } from 'primevue/usetoast';
-import { INotification } from '../notification/Notification';
+import { INotification } from '../notification';
 import { ToastMessageOptions } from 'primevue/toast';
 
 export interface INotificationStore extends INotification {
