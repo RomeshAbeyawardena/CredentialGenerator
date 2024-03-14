@@ -16,12 +16,22 @@ export class StringService implements IStringService {
         this.numberService = numberService;
     }
 
+    hasCharCodeRange(str: string, range: number[]) {
+        const charCodes = this.getCharCodeArray(str);
+        
+        if(range.length == 2){
+            return charCodes.some(f => range[0] && f <= range[1]);
+        }
+
+        return charCodes.some(f => range.includes(f));
+    }
+
     getCharCodeArray(str: string): number[] {
         const array = [];
         for (let i = 0; i < str.length; i++) {
             array.push(str.charCodeAt(i));
         }
-
+        
         return array;
     }
 
@@ -87,7 +97,9 @@ export class StringService implements IStringService {
         let str = "";
 
         while (str.length < length) {
-            if (str.length == 0
+            if (str.length == 0 && 
+                (this.hasCharCodeRange(str, getRange(CharacterType.LowerCase))
+                || this.hasCharCodeRange(str, getRange(CharacterType.UpperCase)))
                 && configuration?.mustStartWithAlphaNumeric) {
                 const randomNumber = this.numberService.getRandomInt(1000);
                 const currentType = (randomNumber < 500)
