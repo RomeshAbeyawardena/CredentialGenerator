@@ -7,12 +7,12 @@
     import { ref } from "vue";
     import { useConfigurationStore } from '../stores/ConfigurationStore';
     import { GenerationComponent } from '../enumerations/GenerationComponents';
+    import { useGeneratorStore } from '../stores/GeneratorStore';
     import { useNotificationStore } from '../stores/NotificationStore';
     import { useCredentialStore } from '../stores/CredentialStore';
     
-    const disableAdd = ref(false);
-    const username = ref("");
-    const password = ref("");
+    const generationStore = useGeneratorStore();
+    
     const store = useConfigurationStore();
     const credentialStore = useCredentialStore();
     
@@ -22,10 +22,10 @@
     }
 
     function generateUsername(isForBoth:boolean) {         
-        username.value = store.generateComponent(GenerationComponent.Username);
+        generationStore.username = store.generateComponent(GenerationComponent.Username);
         if(!isForBoth)
         {
-            disableAdd.value = false;
+            generationStore.disableAdd = false;
         }
     }
     function generatePassword_click()
@@ -33,10 +33,11 @@
         generatePassword(false);
     }
     function generatePassword(isForBoth:boolean) {
-        password.value = store.generateComponent(GenerationComponent.Password);
+        generationStore.password = store
+            .generateComponent(GenerationComponent.Password);
         if(!isForBoth)
         {
-            disableAdd.value = false;
+            generationStore.disableAdd = false;
         }
     }
 
@@ -45,12 +46,12 @@
         let t:Promise<void>;
         switch (component) {
             case GenerationComponent.Username:
-                t = navigator.clipboard.writeText(username.value);
+                t = navigator.clipboard.writeText(generationStore.username);
                 await t;
                 notificationStore.displayMessage("Text copied!", "Text has been copied to the clipboard")
                 return t;
             case GenerationComponent.Password:
-                t =  navigator.clipboard.writeText(password.value);
+                t =  navigator.clipboard.writeText(generationStore.password);
                 await t;
                 notificationStore.displayMessage("Text copied!", "Text has been copied to the clipboard")
                 return t;
@@ -64,20 +65,20 @@
         generateUsername(true);
         generatePassword(true);
         addCredential();
-        disableAdd.value = true;
+        generationStore.disableAdd = true;
     }
 
     function resetForm()
     {
-        username.value = "";
-        password.value = "";
-        disableAdd.value = false;
+        generationStore.username = "";
+        generationStore.password = "";
+        generationStore.disableAdd = true;
     }
 
     function addCredential() {
         credentialStore.addCredential({
-            username: username.value,
-            password: password.value,
+            username: generationStore.username,
+            password: generationStore.password,
         });
 
         disableAdd.value = true;
@@ -86,9 +87,9 @@
     function hasValue(component: GenerationComponent) {
         switch(component) {
             case GenerationComponent.Password:
-                return password.value.length > 0;
+                return generationStore.password.length > 0;
             case GenerationComponent.Username:
-                return username.value.length > 0;
+                return generationStore.username.length > 0;
         }
     }
 
@@ -101,7 +102,7 @@
             </InputGroupAddon>
             <InputText  id="username"
                         :disabled="true"
-                        v-model="username" 
+                        v-model="generationStore.username" 
                         placeholder="Username" />
             <Button aria-label="Copy" 
                     :disabled="!hasValue(GenerationComponent.Username)"
@@ -118,7 +119,7 @@
             </InputGroupAddon>
             <InputText  id="password"
                         :disabled="true"
-                        v-model="password" 
+                        v-model="generationStore.password" 
                         placeholder="Password" />
             <Button aria-label="Copy"
                     :disabled="!hasValue(GenerationComponent.Password)"
@@ -133,7 +134,7 @@
             <Button icon="pi pi-refresh" 
                     label="Generate" 
                     @click="generateBoth" />
-            <Button :disabled="disableAdd"
+            <Button :disabled="generationStore.addDisabled"
                     severity="info" 
                     icon="pi pi-plus-circle"
                     label="Add"
