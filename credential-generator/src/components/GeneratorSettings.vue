@@ -64,6 +64,12 @@ function onUserTypeSelection_Updated(e:any) : void {
                                 placeholder="Select Type" />
                 </div>
                 <div class="checkbox-control-group">
+                    <Checkbox   v-model="store.user.usesRandomGenerator"
+                                input-id="usesRandomGenerator"
+                                :binary="true" />
+                    <label for="usesRandomGenerator">Use random generator</label>
+                </div>
+                <div class="checkbox-control-group">
                     <Checkbox   v-model="store.user.mustStartWithAlphaNumeric"
                                 input-id="mustStartWithAlphaNumeric"
                                 :binary="true" />

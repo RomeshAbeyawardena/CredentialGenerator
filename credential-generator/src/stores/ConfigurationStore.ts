@@ -8,6 +8,7 @@ import { GenerationComponent } from '../enumerations/GenerationComponents';
 import { IStringService } from '../services/StringService';
 import { Services } from '../services/Services';
 import { IConfigurationOptions } from '../configuration/ConfigurationOptions';
+import { faker } from "@faker-js/faker";
 
 export interface IConfigurationStore {
     generateComponent(component:GenerationComponent):string;
@@ -20,6 +21,7 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
     const user: Ref<IUserConfigurationOptions> = ref({
         length: 6,
         mustStartWithAlphaNumeric: true,
+        usesRandomGenerator: false,
         type: CharacterType.MixedNoSymbols
     });
 
@@ -69,6 +71,7 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
 
     function generateComponent(component:GenerationComponent)
     {
+        let usesRandomGenerator = true;
         let configuration : IConfigurationOptions 
         switch(component){
             case GenerationComponent.Email:
@@ -79,14 +82,17 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
                 break;
             case GenerationComponent.Username:
                 configuration = user.value;
+                usesRandomGenerator = user.value.usesRandomGenerator;
                 break;
         }
           
         if(stringService == undefined){
             throw 'Injection failed';
         }
-
-        return stringService
+        
+        return (!usesRandomGenerator && component == GenerationComponent.Username)
+        ? faker.internet.userName()
+        : stringService
             .generateString(configuration.length, configuration.type, getConfig(component));
     }
 
