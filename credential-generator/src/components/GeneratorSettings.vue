@@ -40,6 +40,7 @@ function onUserTypeSelection_Updated(e:any) : void {
                     <label for="characterLength">Character length: </label>
                     <InputNumber    class="w-full" 
                                     input-id="characterLength"
+                                    :disabled="!store.user.usesRandomGenerator"
                                     v-model="store.user.length"
                                     buttonLayout="horizontal" 
                                     :step="1" 
@@ -57,7 +58,8 @@ function onUserTypeSelection_Updated(e:any) : void {
                     <Dropdown   class="w-full" 
                                 @update:modelValue="onUserTypeSelection_Updated"
                                 v-model="userTypeSelection" 
-                                :options="dataSource" 
+                                :options="dataSource"
+                                :disabled="!store.user.usesRandomGenerator"
                                 input-id="characterType"
                                 option-label="label" 
                                 option-value="value"
