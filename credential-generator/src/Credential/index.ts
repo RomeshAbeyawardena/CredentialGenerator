@@ -5,3 +5,12 @@ export interface ICredential {
     password:String;
     created?:Date;
 }
+
+export class Credential {
+    static readonly default: ICredential = {
+        id: "",
+        username: "",
+        emailAddress:"",
+        password:""
+    }
+}
