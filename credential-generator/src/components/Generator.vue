@@ -75,6 +75,7 @@
 
     function resetForm()
     {
+        emailAddress.value = "";
         username.value = "";
         password.value = "";
         disableAdd.value = true;
