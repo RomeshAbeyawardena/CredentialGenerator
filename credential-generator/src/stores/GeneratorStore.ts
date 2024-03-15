@@ -3,6 +3,7 @@ import { computed, ComputedRef, ref, Ref } from "vue";
 
 export interface IGeneratorStore {
     addDisabled:ComputedRef<boolean>;
+    commitToTable:Ref<boolean>;
     disableAdd: Ref<boolean>;
     emailAddress:Ref<string>;
     username: Ref<string>;
@@ -14,7 +15,7 @@ export const useGeneratorStore = defineStore("generator", ():IGeneratorStore => 
     const disableAdd = ref(false);
     const username = ref("");
     const password = ref("");
-    
+    const commitToTable = ref(true);
     const addDisabled = computed(() => {
         return disableAdd.value 
             || username.value.length < 1
@@ -23,6 +24,7 @@ export const useGeneratorStore = defineStore("generator", ():IGeneratorStore => 
 
     return {
         addDisabled,
+        commitToTable,
         emailAddress,
         disableAdd,
         password,

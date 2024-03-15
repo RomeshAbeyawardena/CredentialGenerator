@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import Button from 'primevue/button';
     import ButtonGroup from 'primevue/buttongroup';
+    import Checkbox from 'primevue/checkbox';
     import InputText from 'primevue/inputtext';
     import InputGroup from 'primevue/inputgroup';
     import InputGroupAddon from 'primevue/inputgroupaddon';
@@ -13,7 +14,7 @@
 
     const generationStore = useGeneratorStore();
 
-    const { emailAddress, disableAdd, username, password } = storeToRefs(generationStore);
+    const { commitToTable, emailAddress, disableAdd, username, password } = storeToRefs(generationStore);
 
     const clipboardStore = useClipboardStore();
 
@@ -69,8 +70,11 @@
         generateEmailAddress();
         generateUsername(true);
         generatePassword(true);
-        addCredential();
-        disableAdd.value = true;
+        if(commitToTable.value)
+        {
+            addCredential();
+            disableAdd.value = true;
+        }
     }
 
     function resetForm()
@@ -156,6 +160,13 @@
                     icon="pi pi-refresh" 
                     @click="generatePassword_click" />
         </InputGroup>
+        <div class="mt-2 mb-2">
+            <Checkbox   class="mr-1" 
+                        :binary="true"
+                        v-model="commitToTable"
+                        input-id="commitToTable"  />
+            <label for="commitToTable">Commit to table</label>
+        </div>
         <ButtonGroup>
             <Button icon="pi pi-refresh" 
                     label="Generate" 
