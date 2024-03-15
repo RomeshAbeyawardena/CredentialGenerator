@@ -23,6 +23,15 @@ function formateDate(value:Date) {
 <template>
 <DataTable :value="credentials">
     <Column field="id" header="ID"></Column>
+    <Column field="emailAddress" header="User name">
+        <template #body="slotProps">
+            {{ slotProps.data.emailAddress }}
+            <a href="#" @click="copyToClipboard(slotProps.data.emailAddress)">
+                <i  icon="pi pi-copy" 
+                    class="pi pi-copy"></i>
+            </a>
+        </template>
+    </Column>
     <Column field="username" header="User name">
         <template #body="slotProps">
             {{ slotProps.data.username }}
