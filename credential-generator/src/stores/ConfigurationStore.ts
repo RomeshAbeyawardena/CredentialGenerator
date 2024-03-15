@@ -76,6 +76,7 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
         switch(component){
             case GenerationComponent.Email:
                 configuration = emailAddress.value
+                usesRandomGenerator = false;
                 break;
             case GenerationComponent.Password:
                 configuration = password.value;
@@ -90,8 +91,10 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
             throw 'Injection failed';
         }
         
-        return (!usesRandomGenerator && component == GenerationComponent.Username)
-        ? faker.internet.userName()
+        return (!usesRandomGenerator)
+        ? component == GenerationComponent.Username 
+            ? faker.internet.userName() 
+            : faker.internet.email()
         : stringService
             .generateString(configuration.length, configuration.type, getConfig(component));
     }

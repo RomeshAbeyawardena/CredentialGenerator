@@ -14,42 +14,28 @@
 
     const generationStore = useGeneratorStore();
 
-    const { commitToTable, emailAddress, disableAdd, username, password } = storeToRefs(generationStore);
+    const { commitToTable, emailAddress, username, password } = storeToRefs(generationStore);
 
     const clipboardStore = useClipboardStore();
 
     const store = useConfigurationStore();
     const credentialStore = useCredentialStore();
     
-    function generateUsername_click()
-    {
-        generateUsername(false);
-    }
-
     function generateEmailAddress()
     {
-        emailAddress.value = credentialStore.generateEmail();
+        emailAddress.value = store
+            .generateComponent(GenerationComponent.Email);
     }
 
-    function generateUsername(isForBoth:boolean) {         
+    function generateUsername() {         
         username.value = store
             .generateComponent(GenerationComponent.Username);
-        if(!isForBoth)
-        {
-            generationStore.disableAdd = false;
-        }
+
     }
-    function generatePassword_click()
-    {
-        generatePassword(false);
-    }
-    function generatePassword(isForBoth:boolean) {
+    
+    function generatePassword() {
         password.value = store
             .generateComponent(GenerationComponent.Password);
-        if(!isForBoth)
-        {
-            disableAdd.value = false;
-        }
     }
 
     async function copyToClipboard(component: GenerationComponent) {
@@ -68,12 +54,12 @@
     function generateBoth() 
     {
         generateEmailAddress();
-        generateUsername(true);
-        generatePassword(true);
+        generateUsername();
+        generatePassword();
+
         if(commitToTable.value)
         {
             addCredential();
-            disableAdd.value = true;
         }
     }
 
@@ -82,7 +68,6 @@
         emailAddress.value = "";
         username.value = "";
         password.value = "";
-        disableAdd.value = true;
     }
 
     function addCredential() {
@@ -92,7 +77,7 @@
             password: password.value,
         });
 
-        disableAdd.value = true;
+        resetForm();
     }
 
     function hasValue(component: GenerationComponent) {
@@ -141,7 +126,7 @@
                     @click="copyToClipboard(GenerationComponent.Username)" />
             <Button aria-label="Generate" 
                     icon="pi pi-refresh" 
-                    @click="generateUsername_click" />
+                    @click="generateUsername" />
         </InputGroup>
         <InputGroup>
             <InputGroupAddon>
@@ -158,7 +143,7 @@
                     @click="copyToClipboard(GenerationComponent.Password)" />
             <Button aria-label="Generate" 
                     icon="pi pi-refresh" 
-                    @click="generatePassword_click" />
+                    @click="generatePassword" />
         </InputGroup>
         <div class="mt-2 mb-2">
             <Checkbox   class="mr-1" 
@@ -202,4 +187,4 @@
     div.p-inputgroup {
         margin-bottom: 0.5rem;
     }
-</style>../services/ClipboardStore
+</style>
