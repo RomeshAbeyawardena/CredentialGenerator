@@ -1,4 +1,4 @@
-import { IGenericDataList } from "../datalist/DataList";
+import { IGenericDataList } from "../datalist";
 import { IStringService } from "../services/StringService";
 export enum CharacterType 
 {

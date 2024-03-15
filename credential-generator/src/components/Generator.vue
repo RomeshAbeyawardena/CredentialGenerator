@@ -4,15 +4,19 @@
     import InputText from 'primevue/inputtext';
     import InputGroup from 'primevue/inputgroup';
     import InputGroupAddon from 'primevue/inputgroupaddon';
-    import { ref } from "vue";
     import { useConfigurationStore } from '../stores/ConfigurationStore';
     import { GenerationComponent } from '../enumerations/GenerationComponents';
-    import { useNotificationStore } from '../stores/NotificationStore';
+    import { useGeneratorStore } from '../stores/GeneratorStore';
     import { useCredentialStore } from '../stores/CredentialStore';
-    
-    const disableAdd = ref(false);
-    const username = ref("");
-    const password = ref("");
+    import { useClipboardStore } from '../stores/ClipboardStore';
+    import { storeToRefs } from 'pinia';
+
+    const generationStore = useGeneratorStore();
+
+    const { disableAdd, username, password } = storeToRefs(generationStore);
+
+    const clipboardStore = useClipboardStore();
+
     const store = useConfigurationStore();
     const credentialStore = useCredentialStore();
     
@@ -22,10 +26,11 @@
     }
 
     function generateUsername(isForBoth:boolean) {         
-        username.value = store.generateComponent(GenerationComponent.Username);
+        username.value = store
+            .generateComponent(GenerationComponent.Username);
         if(!isForBoth)
         {
-            disableAdd.value = false;
+            generationStore.disableAdd = false;
         }
     }
     function generatePassword_click()
@@ -33,27 +38,20 @@
         generatePassword(false);
     }
     function generatePassword(isForBoth:boolean) {
-        password.value = store.generateComponent(GenerationComponent.Password);
+        password.value = store
+            .generateComponent(GenerationComponent.Password);
         if(!isForBoth)
         {
             disableAdd.value = false;
         }
     }
 
-    const notificationStore = useNotificationStore();
-    async function copyToClipboard(component: GenerationComponent){
-        let t:Promise<void>;
+    async function copyToClipboard(component: GenerationComponent) {
         switch (component) {
             case GenerationComponent.Username:
-                t = navigator.clipboard.writeText(username.value);
-                await t;
-                notificationStore.displayMessage("Text copied!", "Text has been copied to the clipboard")
-                return t;
+                return await clipboardStore.copyText(username.value);
             case GenerationComponent.Password:
-                t =  navigator.clipboard.writeText(password.value);
-                await t;
-                notificationStore.displayMessage("Text copied!", "Text has been copied to the clipboard")
-                return t;
+                return await clipboardStore.copyText(password.value);
             default:
                 return await new Promise(() => {});
         }
@@ -71,7 +69,7 @@
     {
         username.value = "";
         password.value = "";
-        disableAdd.value = false;
+        disableAdd.value = true;
     }
 
     function addCredential() {
@@ -79,6 +77,17 @@
             username: username.value,
             password: password.value,
         });
+
+        disableAdd.value = true;
+    }
+
+    function hasValue(component: GenerationComponent) {
+        switch(component) {
+            case GenerationComponent.Password:
+                return password.value.length > 0;
+            case GenerationComponent.Username:
+                return username.value.length > 0;
+        }
     }
 
 </script>
@@ -86,12 +95,14 @@
     <form>
         <InputGroup>
             <InputGroupAddon>
-                <i icon="pi pi-copy" class="pi pi-user"></i>
+                <i icon="pi pi-user" class="pi pi-user"></i>
             </InputGroupAddon>
             <InputText  id="username"
+                        :disabled="true"
                         v-model="username" 
                         placeholder="Username" />
             <Button aria-label="Copy" 
+                    :disabled="!hasValue(GenerationComponent.Username)"
                     icon="pi pi-copy"
                     severity="info"
                     @click="copyToClipboard(GenerationComponent.Username)" />
@@ -104,9 +115,11 @@
                 <i class="pi pi-key"></i>
             </InputGroupAddon>
             <InputText  id="password"
+                        :disabled="true"
                         v-model="password" 
                         placeholder="Password" />
-            <Button aria-label="Copy" 
+            <Button aria-label="Copy"
+                    :disabled="!hasValue(GenerationComponent.Password)"
                     icon="pi pi-copy"
                     severity="info"
                     @click="copyToClipboard(GenerationComponent.Password)" />
@@ -118,7 +131,7 @@
             <Button icon="pi pi-refresh" 
                     label="Generate" 
                     @click="generateBoth" />
-            <Button :disabled="disableAdd"
+            <Button :disabled="generationStore.addDisabled"
                     severity="info" 
                     icon="pi pi-plus-circle"
                     label="Add"
@@ -149,4 +162,4 @@
     div.p-inputgroup {
         margin-bottom: 0.5rem;
     }
-</style>
+</style>../services/ClipboardStore
