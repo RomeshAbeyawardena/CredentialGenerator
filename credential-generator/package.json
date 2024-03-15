@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/luxon": "^3.4.2",
     "@types/uuid": "^9.0.8",
     "luxon": "^3.4.4",
