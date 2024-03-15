@@ -4,12 +4,18 @@ import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
 import { useConfigurationStore } from '../stores/ConfigurationStore';
-import { ref } from "vue";
+import { inject, ref } from "vue";
 import { CharacterType, toList } from '../enumerations/CharacterType';
-import { NumberService } from '../services/NumberService';
-import { StringService } from '../services/StringService';
+import { Services } from '../services/Services';
+import { IStringService } from '../services/StringService';
 
-const stringService = new StringService(new NumberService());
+const stringService = inject<IStringService>(Services.StringService);
+
+if(stringService == undefined)
+{
+    throw 'String service unavailable';
+}
+
 const dataSource = toList(stringService);
 
 const store = useConfigurationStore();

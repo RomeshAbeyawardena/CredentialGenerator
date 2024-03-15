@@ -11,6 +11,7 @@ import { provide } from 'vue';
 import { Services } from './services/Services';
 import { INumberService, NumberService } from './services/NumberService';
 import { IStringService, StringService } from './services/StringService';
+import { IDateService, DateService } from './services/DateService';
 
 const store = useNotificationStore();
 const numberService = new NumberService()
@@ -18,6 +19,7 @@ const activeIndex = ref(0);
 
 provide<INumberService>(Services.NumberService, numberService);
 provide<IStringService>(Services.StringService, new StringService(numberService));
+provide<IDateService>(Services.DateService, new DateService());
 </script>
 
 <template>

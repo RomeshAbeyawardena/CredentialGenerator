@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import { inject } from 'vue';
+import { IDateService } from '../services/DateService';
 import { useCredentialStore } from '../stores/CredentialStore';
 import { useClipboardStore } from '../stores/ClipboardStore';
-import { DateTime } from "luxon";
 import { storeToRefs } from 'pinia';
+import { Services } from '../services/Services';
 
 const store = useCredentialStore();
 
@@ -16,8 +18,9 @@ async function copyToClipboard(text:string) {
     return await clipboardStore.copyText(text);
 }
 
+const dateService = inject<IDateService>(Services.DateService);
 function formateDate(value:Date) {
-    return DateTime.fromISO(value.toISOString()).toFormat("dd MMM yyyy HH:mm");
+    return dateService?.getDateTime(value).toFormat("dd MMM yyyy HH:mm");
 }
 </script>
 <template>
