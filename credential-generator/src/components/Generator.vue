@@ -13,7 +13,7 @@
 
     const generationStore = useGeneratorStore();
 
-    const { disableAdd, username, password } = storeToRefs(generationStore);
+    const { emailAddress, disableAdd, username, password } = storeToRefs(generationStore);
 
     const clipboardStore = useClipboardStore();
 
@@ -23,6 +23,11 @@
     function generateUsername_click()
     {
         generateUsername(false);
+    }
+
+    function generateEmailAddress()
+    {
+        emailAddress.value = credentialStore.generateEmail();
     }
 
     function generateUsername(isForBoth:boolean) {         
@@ -48,6 +53,8 @@
 
     async function copyToClipboard(component: GenerationComponent) {
         switch (component) {
+            case GenerationComponent.Email:
+            return await clipboardStore.copyText(emailAddress.value);
             case GenerationComponent.Username:
                 return await clipboardStore.copyText(username.value);
             case GenerationComponent.Password:
@@ -59,6 +66,7 @@
 
     function generateBoth() 
     {
+        generateEmailAddress();
         generateUsername(true);
         generatePassword(true);
         addCredential();
@@ -74,6 +82,7 @@
 
     function addCredential() {
         credentialStore.addCredential({
+            emailAddress: emailAddress.value,
             username: username.value,
             password: password.value,
         });
@@ -83,6 +92,8 @@
 
     function hasValue(component: GenerationComponent) {
         switch(component) {
+            case GenerationComponent.Email:
+                return emailAddress.value.length > 0;
             case GenerationComponent.Password:
                 return password.value.length > 0;
             case GenerationComponent.Username:
@@ -93,6 +104,23 @@
 </script>
 <template>
     <form>
+        <InputGroup>
+            <InputGroupAddon>
+                <i icon="pi pi-envelope" class="pi pi-envelope"></i>
+            </InputGroupAddon>
+            <InputText  id="emailAddress"
+                        :disabled="true"
+                        v-model="emailAddress" 
+                        placeholder="Email Address" />
+            <Button aria-label="Copy" 
+                    :disabled="!hasValue(GenerationComponent.Email)"
+                    icon="pi pi-copy"
+                    severity="info"
+                    @click="copyToClipboard(GenerationComponent.Email)" />
+            <Button aria-label="Generate" 
+                    icon="pi pi-refresh" 
+                    @click="generateEmailAddress" />
+        </InputGroup>
         <InputGroup>
             <InputGroupAddon>
                 <i icon="pi pi-user" class="pi pi-user"></i>

@@ -2,13 +2,15 @@ import { defineStore } from "pinia";
 import { computed, ComputedRef, ref, Ref } from "vue";
 
 export interface IGeneratorStore {
-    disableAdd: Ref<boolean>;
     addDisabled:ComputedRef<boolean>;
+    disableAdd: Ref<boolean>;
+    emailAddress:Ref<string>;
     username: Ref<string>;
     password: Ref<string>;
 }
 
 export const useGeneratorStore = defineStore("generator", ():IGeneratorStore => {
+    const emailAddress = ref("");
     const disableAdd = ref(false);
     const username = ref("");
     const password = ref("");
@@ -21,6 +23,7 @@ export const useGeneratorStore = defineStore("generator", ():IGeneratorStore => 
 
     return {
         addDisabled,
+        emailAddress,
         disableAdd,
         password,
         username

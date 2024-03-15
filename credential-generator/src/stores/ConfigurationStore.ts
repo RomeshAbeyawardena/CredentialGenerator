@@ -24,6 +24,11 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
     });
 
     const stringService = inject<IStringService>(Services.StringService);
+  
+    const emailAddress: Ref<IConfigurationOptions> = ref({
+        length:0,
+        type: CharacterType.Mixed
+    });
     
     const password: Ref<IPasswordConfigurationOptions> = ref({
         length: 8,
@@ -35,6 +40,14 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
     function getConfig(component: GenerationComponent): IStringGenerationConfiguration
     {
         switch (component) {
+            case GenerationComponent.Email:
+            {
+                return {
+                    mustStartWithAlphaNumeric: false,
+                    mustHaveAtLeastOneNumber: false,
+                    mustHaveAtLeastOneSymbol: false
+                }
+            }
             case GenerationComponent.Username:
                 return {
                     mustStartWithAlphaNumeric: user.value.mustStartWithAlphaNumeric,
@@ -56,18 +69,21 @@ export const useConfigurationStore = defineStore("configuration", (): IConfigura
 
     function generateComponent(component:GenerationComponent)
     {
-        if(stringService == undefined){
-            throw 'Injection failed';
-        }
-
         let configuration : IConfigurationOptions 
         switch(component){
+            case GenerationComponent.Email:
+                configuration = emailAddress.value
+                break;
             case GenerationComponent.Password:
                 configuration = password.value;
                 break;
             case GenerationComponent.Username:
                 configuration = user.value;
                 break;
+        }
+          
+        if(stringService == undefined){
+            throw 'Injection failed';
         }
 
         return stringService
