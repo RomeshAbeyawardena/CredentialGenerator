@@ -33,30 +33,30 @@ function formateDate(value:Date) {
     </Column>
     <Column field="emailAddress" header="User name">
         <template #body="slotProps">
-            {{ slotProps.data.emailAddress }}
             <a href="#" @click="copyToClipboard(slotProps.data.emailAddress)">
                 <i  icon="pi pi-copy" 
                     class="pi pi-copy"></i>
             </a>
+            <span>{{ slotProps.data.emailAddress }}</span>
         </template>
     </Column>
     <Column field="username" header="User name">
         <template #body="slotProps">
-            {{ slotProps.data.username }}
             <a href="#" @click="copyToClipboard(slotProps.data.username)">
                 <i  icon="pi pi-copy" 
                     class="pi pi-copy"></i>
             </a>
+            <span>{{ slotProps.data.username }}</span>
         </template>
     </Column>
     <Column field="password" header="Password">
         <template #body="slotProps">
-            {{ slotProps.data.password }}
             <a  href="#"
                 @click="copyToClipboard(slotProps.data.password)">
                 <i  icon="pi pi-copy" 
                     class="pi pi-copy"></i>
             </a>
+            <span>{{ slotProps.data.password }}</span>
         </template>
     </Column>
     <Column field="created" header="Created">

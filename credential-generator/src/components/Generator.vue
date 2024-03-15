@@ -10,6 +10,9 @@
     import { useGeneratorStore } from '../stores/GeneratorStore';
     import { useCredentialStore } from '../stores/CredentialStore';
     import { useClipboardStore } from '../stores/ClipboardStore';
+    import { useNotificationStore } from '../stores/NotificationStore';
+    import { useAppStore } from '../stores/AppStore';
+
     import { storeToRefs } from 'pinia';
 
     const generationStore = useGeneratorStore();
@@ -70,6 +73,10 @@
         password.value = "";
     }
 
+    const appStore = useAppStore();
+    const { accordianTabIndex } = storeToRefs(appStore);
+    const notificationStore = useNotificationStore();
+
     function addCredential() {
         credentialStore.addCredential({
             emailAddress: emailAddress.value,
@@ -77,6 +84,8 @@
             password: password.value,
         });
 
+        notificationStore.displayMessage("Added to table", "Credential added to table");
+            accordianTabIndex.value = 1;
         resetForm();
     }
 
