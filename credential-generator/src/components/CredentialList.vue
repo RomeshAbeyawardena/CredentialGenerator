@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { inject } from 'vue';
+import Checkbox from 'primevue/checkbox';
+import { inject, ref } from 'vue';
 import { IDateService } from '../services/DateService';
 import { useCredentialStore } from '../stores/CredentialStore';
 import { useClipboardStore } from '../stores/ClipboardStore';
@@ -17,6 +18,15 @@ const clipboardStore = useClipboardStore();
 async function copyToClipboard(text:string) {
     return await clipboardStore.copyText(text);
 }
+const selectedItemIds = ref(new Array<string>());
+
+function changeHandler(e:any) {
+    console.log(e);
+}
+
+function isSelected(id:string){
+    return selectedItemIds.value.includes(id);
+}
 
 const dateService = inject<IDateService>(Services.DateService);
 function formateDate(value:Date) {
@@ -25,7 +35,13 @@ function formateDate(value:Date) {
 </script>
 <template>
 <DataTable :value="credentials">
-    <Column field="id" header="ID"></Column>
+    <Column field="id" header="ID">
+        <template #body="slotProps">
+            <Checkbox   :input="{dataItemId: slotProps.data.id}"
+                        @change="changeHandler" 
+                        :binary="isSelected(slotProps.data.id)" />
+        </template>
+    </Column>
     <Column field="emailAddress" header="User name">
         <template #body="slotProps">
             {{ slotProps.data.emailAddress }}
