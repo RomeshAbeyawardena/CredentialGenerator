@@ -25,9 +25,7 @@ export const useCredentialStore = defineStore("credential", ():ICredentialStore 
 
         if(credential.emailAddress == undefined)
         {
-            credential.emailAddress =  faker.person.firstName().concat(
-                faker.number.int({ min: 1000, max: 2000}).toString(),
-                "@", 
+            credential.emailAddress =  faker.internet.userName().concat("@", 
                 faker.company.name().replace(/[ |,]/gm, ""),
                 ".", faker.internet.domainSuffix());
         }
